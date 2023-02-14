@@ -8,13 +8,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-public class Main {
+public class GoogleAPI {
     /***
      *
      * @param args: the first part is the origin and the second part is the destination.
      * @throws FileNotFoundException
      */
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
 
         Maps googleMaps = new Maps();
         Gson gson = new Gson();
@@ -22,6 +22,11 @@ public class Main {
         Map<String, Object> jsonMap = new HashMap<>();
 
 
+        // CommandLine arguments example: "TRA, Muscat" "Al Khuwair North"
+        if (args.length != 2) {
+            System.out.println("You have to put two command line inputs");
+            throw new IOException();
+        }
         String origin = args[0];
         String dropOff = args[1];
 
@@ -51,7 +56,8 @@ public class Main {
             System.out.println(duration.get("text"));
             System.out.println(response.body().string());
         } catch (IOException e) {
-            System.out.println("There was an error in the request");
+            System.out.println("There was an error in the request, the response failed:" + e.toString());
+
             throw new RuntimeException(e);
         }
 
