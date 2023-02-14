@@ -9,24 +9,27 @@ import java.io.IOException;
 import java.util.*;
 
 public class Main {
+    /***
+     *
+     * @param args: the first part is the origin and the second part is the destination.
+     * @throws FileNotFoundException
+     */
     public static void main(String[] args) throws FileNotFoundException {
 
+        Maps googleMaps = new Maps();
         Gson gson = new Gson();
         FileReader jsonFile = new FileReader("gmap_distance_matrix_response.json");
         Map<String, Object> jsonMap = new HashMap<>();
 
 
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Dear user, please input your pickup location: ");
-        String origin = sc.nextLine();
-        System.out.print("Please enter your destination: ");
-        String dropOff = sc.nextLine();
+        String origin = args[0];
+        String dropOff = args[1];
 
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://maps.googleapis.com/maps/api/distancematrix/json").newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(googleMaps.distanceMatrixURL).newBuilder();
         urlBuilder.addQueryParameter("origins", origin);
         urlBuilder.addQueryParameter("destinations", dropOff);
         urlBuilder.addQueryParameter("units", "imperial");
-        urlBuilder.addQueryParameter("key", "Nothing");
+        urlBuilder.addQueryParameter("key", googleMaps.apiKey);
 
         OkHttpClient client = new OkHttpClient().newBuilder().build();
 
